@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 
+import { Measurement } from './measurement';
+import {MeasurementDataService} from './measurement-data.service'
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -8,46 +11,66 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'app works!';
 
-  data = [[new Date("2008/05/07"), 75],
-    [new Date("2008/05/08"), 70],
-    [new Date("2008/05/09"), 80]
-  ];
+  temperatureData: Measurement;
+  humidityData: Measurement;
+
+  constructor (private measurementDataService: MeasurementDataService) {}
+
+  ngOnInit() { this.getMeasurementsForToday(); }
+
+  getMeasurementsForToday(): void {
+    this.measurementDataService.getHumidityDataForDay(new Date())
+      .then(measurements => {
+        this.humidityData = measurements;
+        this.lineChartData[0].data = measurements.values;
+        this.lineChartData[1].data = measurements.values;
+        this.lineChartLabels = measurements.times;
+        console.log(this.humidityData);
+      });
+    this.measurementDataService.getTemperatureDataForDay(new Date())
+      .then(measurements => {
+        this.temperatureData = measurements;
+        this.lineChartData[1].data = measurements.values;
+        this.lineChartLabels = measurements.times;
+      });
+  }
 
   // lineChart
   public lineChartData:Array<any> = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A', borderWidth: 1, fill: false, pointRadius: 0},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B', borderWidth: 1, fill: false, pointRadius: 0}
+    {data: [25, 30, 45], label: 'Temperature', borderWidth: 3, fill: true, pointRadius: 0},
+    {data: [12, 6, 2], label: 'Humidity', borderWidth: 1, fill: false, pointRadius: 0}
   ];
-  public lineChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public lineChartLabels:Array<any> = [1, 2 ,3];
+
   public lineChartOptions:any = {
     responsive: true,
   };
-  public lineChartColors:Array<any> = [
-    { // grey
-      backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-    },
-    { // dark grey
-      backgroundColor: 'rgba(77,83,96,0.2)',
-      borderColor: 'rgba(77,83,96,1)',
-      pointBackgroundColor: 'rgba(77,83,96,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(77,83,96,1)'
-    },
-    { // grey
-      backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-    }
-  ];
+  // public lineChartColors:Array<any> = [
+  //   { // grey
+  //     backgroundColor: 'rgba(148,159,177,0.2)',
+  //     borderColor: 'rgba(148,159,177,1)',
+  //     pointBackgroundColor: 'rgba(148,159,177,1)',
+  //     pointBorderColor: '#fff',
+  //     pointHoverBackgroundColor: '#fff',
+  //     pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+  //   },
+  //   { // dark grey
+  //     backgroundColor: 'rgba(77,83,96,0.2)',
+  //     borderColor: 'rgba(77,83,96,1)',
+  //     pointBackgroundColor: 'rgba(77,83,96,1)',
+  //     pointBorderColor: '#fff',
+  //     pointHoverBackgroundColor: '#fff',
+  //     pointHoverBorderColor: 'rgba(77,83,96,1)'
+  //   },
+  //   { // grey
+  //     backgroundColor: 'rgba(148,159,177,0.2)',
+  //     borderColor: 'rgba(148,159,177,1)',
+  //     pointBackgroundColor: 'rgba(148,159,177,1)',
+  //     pointBorderColor: '#fff',
+  //     pointHoverBackgroundColor: '#fff',
+  //     pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+  //   }
+  // ];
   public lineChartLegend:boolean = true;
   public lineChartType:string = 'line';
 
