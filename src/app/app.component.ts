@@ -14,36 +14,41 @@ export class AppComponent {
   temperatureData: Measurement;
   humidityData: Measurement;
 
+  public dt: Date = new Date();
+
   constructor (private measurementDataService: MeasurementDataService) {}
 
-  ngOnInit() { this.getMeasurementsForToday(); }
+  ngOnInit() { this.getMeasurementsForDay(new Date); }
 
-  getMeasurementsForToday(): void {
-    this.measurementDataService.getHumidityDataForDay(new Date())
+  getMeasurementsForDay(day: Date): void {
+    this.measurementDataService.getHumidityDataForDay(day)
       .then(measurements => {
         this.humidityData = measurements;
-        this.lineChartData[0].data = measurements.values;
-        this.lineChartData[1].data = measurements.values;
-        this.lineChartLabels = measurements.times;
+        this.lineChartHumData[0].data = measurements.values;        
+        this.lineChartHumLabels = measurements.times;
         console.log(this.humidityData);
       });
-    this.measurementDataService.getTemperatureDataForDay(new Date())
+    this.measurementDataService.getTemperatureDataForDay(day)
       .then(measurements => {
         this.temperatureData = measurements;
-        this.lineChartData[1].data = measurements.values;
-        this.lineChartLabels = measurements.times;
+        this.lineChartTempData[0].data = measurements.values;
+        this.lineChartTempLabels = measurements.times;
       });
   }
 
   // lineChart
-  public lineChartData:Array<any> = [
-    {data: [25, 30, 45], label: 'Temperature', borderWidth: 3, fill: true, pointRadius: 0},
+  public lineChartHumData:Array<any> = [    
     {data: [12, 6, 2], label: 'Humidity', borderWidth: 1, fill: false, pointRadius: 0}
   ];
-  public lineChartLabels:Array<any> = [1, 2 ,3];
+  public lineChartTempData:Array<any> = [
+    {data: [25, 30, 45], label: 'Temperature', borderWidth: 3, fill: true, pointRadius: 0}    
+  ];
+  public lineChartHumLabels:Array<any> = [1, 2 ,3];
+  public lineChartTempLabels:Array<any> = [1, 2 ,3];
 
   public lineChartOptions:any = {
     responsive: true,
+    
   };
   // public lineChartColors:Array<any> = [
   //   { // grey
@@ -75,17 +80,12 @@ export class AppComponent {
   public lineChartType:string = 'line';
 
   public randomize():void {
-    let _lineChartData:Array<any> = new Array(this.lineChartData.length);
-    let Labels = new Array(24*60);
-    for (let i = 0; i < this.lineChartData.length; i++) {
-      _lineChartData[i] = {data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label};
-      for (let j = 0; j < 24*60; j++) {
-        _lineChartData[i].data[j] = Math.floor((Math.random() * 100) + 1);
-        this.lineChartLabels[j] = j;
-      }
-    }
-    this.lineChartLabels = Labels;
-    this.lineChartData = _lineChartData;
+    this.getMeasurementsForDay(this.dt);
+  }
+
+  public dateChanged(e:any):void {
+    console.log(e);
+    this.getMeasurementsForDay(e);
   }
 
   // events

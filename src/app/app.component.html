@@ -4,12 +4,31 @@
 <span class="label label-default">test</span>
 <input type="button">
 
+<span class="cal-icon"></span>
+<div style="display:inline-block; min-height:290px;">
+    <datepicker [(ngModel)]="dt" [showWeeks]="true" [dateDisabled]="dateDisabled" (selectionDone)="dateChanged($event)"></datepicker>
+</div>
+
 <div class="row">
   <div class="col-md-12">
     <div style="display: block;">
-      <canvas baseChart width="1200" height="400"
-              [datasets]="lineChartData"
-              [labels]="lineChartLabels"
+      <canvas baseChart width="1100" height="400"
+              [datasets]="lineChartHumData"
+              [labels]="lineChartHumLabels"
+              [options]="lineChartOptions"
+              [legend]="lineChartLegend"
+              [chartType]="lineChartType"
+              (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+    </div>
+  </div>
+  </div>
+  <div class="row">
+  <div class="col-md-12">
+    <div style="display: block;">
+      <canvas baseChart width="1100" height="400"
+              [datasets]="lineChartTempData"
+              [labels]="lineChartTempLabels"
               [options]="lineChartOptions"
               [legend]="lineChartLegend"
               [chartType]="lineChartType"

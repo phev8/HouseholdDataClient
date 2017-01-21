@@ -7,7 +7,7 @@ import { Measurement } from './measurement';
 @Injectable()
 export class MeasurementDataService {
   private headers = new Headers({'Content-Type': 'application/json'});
-  private hostname = "http://localhost:1337";
+  private hostname = "http://192.168.188.37:1337";
 
   constructor(private http: Http) { }
 
