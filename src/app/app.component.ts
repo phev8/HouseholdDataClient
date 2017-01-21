@@ -14,6 +14,11 @@ export class AppComponent {
   temperatureData: Measurement;
   humidityData: Measurement;
 
+  minTemperature: number;
+  maxTemperature: number;
+  minHumidity: number;
+  maxHumidity: number;
+
   public dt: Date = new Date();
 
   constructor (private measurementDataService: MeasurementDataService) {}
@@ -26,6 +31,9 @@ export class AppComponent {
         this.humidityData = measurements;
         this.lineChartHumData[0].data = measurements.values;        
         this.lineChartHumLabels = measurements.times;
+
+        this.minHumidity = Math.min.apply(null, measurements.values).toFixed(2);
+        this.maxHumidity = Math.max.apply(null, measurements.values).toFixed(2);
         console.log(this.humidityData);
       });
     this.measurementDataService.getTemperatureDataForDay(day)
@@ -33,6 +41,8 @@ export class AppComponent {
         this.temperatureData = measurements;
         this.lineChartTempData[0].data = measurements.values;
         this.lineChartTempLabels = measurements.times;
+        this.minTemperature = Math.min.apply(null, measurements.values).toFixed(2);
+        this.maxTemperature = Math.max.apply(null, measurements.values).toFixed(2);
       });
   }
 
