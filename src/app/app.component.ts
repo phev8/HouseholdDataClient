@@ -73,6 +73,13 @@ export class AppComponent {
           minRotation: 45
         }
       }]
+    },
+    tooltips: {
+      mode: 'label',
+      intersect: false
+    },
+    hover: {
+      intersect: false
     }
   };
   // public lineChartColors:Array<any> = [
@@ -119,6 +126,6 @@ export class AppComponent {
   }
 
   public chartHovered(e:any):void {
-    console.log(e);
+    //console.log(e);
   }
 }
