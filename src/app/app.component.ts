@@ -29,7 +29,7 @@ export class AppComponent {
     this.measurementDataService.getHumidityDataForDay(day)
       .then(measurements => {
         this.humidityData = measurements;
-        this.lineChartHumData[0].data = measurements.values;        
+        this.lineChartHumData[0].data = measurements.values;
         this.lineChartHumLabels = measurements.times;
 
         this.minHumidity = Math.min.apply(null, measurements.values).toFixed(2);
@@ -47,18 +47,33 @@ export class AppComponent {
   }
 
   // lineChart
-  public lineChartHumData:Array<any> = [    
+  public lineChartHumData:Array<any> = [
     {data: [12, 6, 2], label: 'Humidity', borderWidth: 1, fill: false, pointRadius: 0}
   ];
   public lineChartTempData:Array<any> = [
-    {data: [25, 30, 45], label: 'Temperature', borderWidth: 3, fill: true, pointRadius: 0}    
+    {data: [25, 30, 45], label: 'Temperature', borderWidth: 3, fill: true, pointRadius: 0}
   ];
   public lineChartHumLabels:Array<any> = [1, 2 ,3];
   public lineChartTempLabels:Array<any> = [1, 2 ,3];
 
   public lineChartOptions:any = {
     responsive: true,
-    
+    scales: {
+      xAxes: [{
+        type: 'time',
+        time: {
+          unit: 'minute',
+          unitStepSize: 30,
+          displayFormats: {
+            'minute': 'HH:mm',
+            'hour': 'HH:mm'
+          }
+        },
+        ticks: {
+          minRotation: 45
+        }
+      }]
+    }
   };
   // public lineChartColors:Array<any> = [
   //   { // grey
