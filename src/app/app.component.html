@@ -1,22 +1,29 @@
 <h1>
   {{title}}
+  <span class="label label-default">test</span>
 </h1>
-<span class="label label-default">test</span>
-<input type="button">
 
-<span class="cal-icon"></span>
+
 <div style="display:inline-block; min-height:290px;">
-    <datepicker [(ngModel)]="dt" [showWeeks]="true" [startingDay]=1 [dateDisabled]="dateDisabled" (selectionDone)="dateChanged($event)"></datepicker>
+  <datepicker [(ngModel)]="dt" [showWeeks]="true" [startingDay]=1 [dateDisabled]="dateDisabled" (selectionDone)="dateChanged($event)"></datepicker>
 </div>
-{{ minTemperature }}
-{{ maxTemperature }}
-{{ minHumidity }}
-{{ maxHumidity }}
 
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-2">
+    <table class="table table-responsive table-condensed">
+      <tr>
+        <th>Min. humidity</th>
+        <th><span class="label label-primary">{{ minHumidity }}</span></th>
+      </tr>
+      <tr>
+        <th>Max. humidity</th>
+        <th><span class="label label-danger">{{ maxHumidity }}</span></th>
+      </tr>
+    </table>
+  </div>
+  <div class="col-md-9">
     <div style="display: block;">
-      <canvas baseChart width="1100" height="400"
+      <canvas baseChart width="250" height="120"
               [datasets]="lineChartHumData"
               [labels]="lineChartHumLabels"
               [options]="lineChartOptions"
@@ -26,11 +33,23 @@
               (chartClick)="chartClicked($event)"></canvas>
     </div>
   </div>
+</div>
+<div class="row">
+  <div class="col-md-2">
+        <table class="table table-responsive table-condensed">
+          <tr>
+            <th>Min. temperature</th>
+            <th><span class="label label-primary">{{ minTemperature }}</span></th>
+          </tr>
+          <tr>
+            <th>Max. temperature</th>
+            <th><span class="label label-danger">{{ maxTemperature }}</span></th>
+          </tr>
+        </table>
   </div>
-  <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-9">
     <div style="display: block;">
-      <canvas baseChart width="1100" height="400"
+      <canvas baseChart width="250" height="120"
               [datasets]="lineChartTempData"
               [labels]="lineChartTempLabels"
               [options]="lineChartOptions"
@@ -39,18 +58,5 @@
               (chartHover)="chartHovered($event)"
               (chartClick)="chartClicked($event)"></canvas>
     </div>
-  </div>
-  </div>
-<div class="row">
-  <div class="col-md-6" style="margin-bottom: 10px">
-    <table class="table table-responsive table-condensed">
-      <tr>
-        <th *ngFor="let label of lineChartLabels">{{label}}</th>
-      </tr>
-      <tr *ngFor="let d of lineChartData">
-        <td *ngFor="let label of lineChartLabels; let j=index">{{d && d.data[j]}}</td>
-      </tr>
-    </table>
-    <button (click)="randomize()">CLICK</button>
   </div>
 </div>
